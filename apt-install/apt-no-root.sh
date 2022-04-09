@@ -1,12 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 ########################################################
 # install package without root privilege in debian
 # fork from https://github.com/0x00009b/pkget
 ######################################s##################
 
+# - Prepare  
+# cp /etc/apt/sources.list path_of_apt-no-root.sh  
+# cd path_of_apt-no-root.sh ; chmod +x apt-no-root.sh  
+
 # - Usage:  
-# ./apt-no-root.sh <package>
+# ./apt-no-root.sh package
 
 # - Example:  
 # ./apt-no-root.sh httping  
@@ -16,22 +20,30 @@
 # - After install, update envs to effective:  
 # source ~/.profile
 
+# - The install logs in file apt-no-root.log.
+
 # - How to modify the default installed values?  
-# search comments "modify according to" in the script and do your modify.  
+# search comments "modify according to" in the shell and do your modify.  
 # e.g. package install base dir is hold by the var BUILD_DIR (default is $HOME/root-free)
 
 # - How to add source repositories without root privilege?  
-# copy /etc/apt/sources.list to the same dir as this script in  
-# add your soruce repositories to it.
+# add your soruce repositories to local sources.list in dir of the shell
 
 # - How to add gpg key without root privilege?  
-# gpg --keyserver <key server> --recv-keys <keyid>  
-# gpg --export keyid > trusted.gpg (place it to dir same as this script in)  
+# gpg --keyserver key_server --recv-keys keyid  
+# gpg --export keyid > trusted.gpg (place it to dir same as the shell in)  
 # or download key file (e.g. wget https://mariadb.org/mariadb_release_signing_key.asc)  
 # gpg --import mariadb_release_signing_key.asc  
 # example (add mariadb source repository gpg key):  
 # gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xF1656F24C74CD1D8  
 # gpg --export 0xF1656F24C74CD1D8 > ./trusted.gpg  
+
+# - Install success but unable to run or output error?  
+# check if source ~/.profile executed  
+# check PATH (can add more path modify the shell)  
+# check LD_LIBRARY_PATH  
+# check PYTHONPATH  
+# check need to set more env about paths  
 
 # define constants
 CACHE_DIR=/tmp
@@ -62,6 +74,8 @@ PROFILE_FILE=$HOME/.profile
 
 APT_CACHE_DIR=$CACHE_DIR/apt/cache
 APT_STATE_DIR=$CACHE_DIR/apt/state
+
+LOG_FILE=apt-no-root.log
 
 # prepare dir
 mkdir $HOME_BIN -p
@@ -112,7 +126,6 @@ APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=./sources.list -o dir::etc::tr
 rm -rf $APT_CACHE
 mkdir -p $APT_CACHE_DIR/archives/partial
 mkdir -p $APT_STATE_DIR/lists/partial
-mkdir -p $APT_SOURCELIST_DIR
 
 topic "Updating apt caches"
 apt $APT_OPTIONS update | indent
@@ -140,25 +153,25 @@ find $BUILD_DIR -type f -ipath '*/pkgconfig/*.pc' | xargs --no-run-if-empty -n 1
 
 # start logging
 echo "building logfile"
-echo "-------START NEW INSTALL-----" >> apt-no-root.log
-echo "install date:" >> apt-no-root.log
-date >> apt-no-root.log
+echo "-------START NEW INSTALL-----" >> ./$LOG_FILE
+echo "install date:" >> ./$LOG_FILE
+date >> ./$LOG_FILE
 echo "system:"
-uname -a >> apt-no-root.log
+uname -a >> ./$LOG_FILE
 echo "user:"
-echo "$USER" >> apt-no-root.log
+echo "$USER" >> ./$LOG_FILE
 echo "user home:"
-echo "$HOME" >> apt-no-root.log
-echo "install details" >> apt-no-root.log
-echo "package:" >> apt-no-root.log
-echo "$PACKAGE" >> apt-no-root.log
-echo "build dir:"  >> apt-no-root.log
-echo "$BUILD_DIR"  >> apt-no-root.log
-echo "cahche_dir:" >> apt-no-root.log
-echo "$APT_CACHE_DIR" >> apt-no-root.log
-echo "source list dir:" >> apt-no-root.log
-echo "$APT_SOURCELIST_DIR" >> apt-no-root.log
-echo "-------END NEW INSTALL------" >> apt-no-root.log
+echo "$HOME" >> ./$LOG_FILE
+echo "install details" >> ./$LOG_FILE
+echo "package:" >> ./$LOG_FILE
+echo "$PACKAGE" >> ./$LOG_FILE
+echo "build dir:"  >> ./$LOG_FILE
+echo "$BUILD_DIR"  >> ./$LOG_FILE
+echo "cahche_dir:" >> ./$LOG_FILE
+echo "$APT_CACHE_DIR" >> ./$LOG_FILE
+echo "source list dir:" >> ./$LOG_FILE
+echo "$APT_SOURCELIST_DIR" >> ./$LOG_FILE
+echo "-------END NEW INSTALL------" >> ./$LOG_FILE
 echo "install details saved to logfile"
-echo "TIP: to see the log file type cat apt-no-root.log"
+echo "TIP: to see the log file type cat $LOG_FILE"
 echo " All done :-)"
