@@ -77,7 +77,7 @@ echo "user home:"
 echo "$HOME" >> ./$LOG_FILE
 echo "install details" >> ./$LOG_FILE
 echo "package:" >> ./$LOG_FILE
-echo "$1" >> ./$LOG_FILE
+echo "$pkgname" >> ./$LOG_FILE
 echo "build dir:"  >> ./$LOG_FILE
 echo "$BUILD_DIR"  >> ./$LOG_FILE
 echo "cahche_dir:" >> ./$LOG_FILE
