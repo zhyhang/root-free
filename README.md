@@ -9,17 +9,16 @@ cp /etc/apt/sources.list path_of_apt-no-root.sh
 cd path_of_apt-no-root.sh ; chmod +x apt-no-root.sh  
 
 - Usage:  
-./apt-no-root.sh package
+./apt-no-root.sh package-list
 
 - Example:  
-./apt-no-root.sh httping  
-./apt-no-root.sh dstat  
+./apt-no-root.sh httping  dstat  
 ./apt-no-root.sh glances  
 
 - After install, update envs to effective:  
 source ~/.profile
 
-- The install logs in file apt-no-root.log.
+- The install log in file install.log.
 
 - How to modify the default installed values?  
 search comments "modify according to" in the shell and do your modify.  

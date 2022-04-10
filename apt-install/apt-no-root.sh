@@ -10,11 +10,10 @@
 # cd path_of_apt-no-root.sh ; chmod +x apt-no-root.sh  
 
 # - Usage:  
-# ./apt-no-root.sh package
+# ./apt-no-root.sh package-list
 
 # - Example:  
-# ./apt-no-root.sh httping  
-# ./apt-no-root.sh dstat  
+# ./apt-no-root.sh httping  dstat  
 # ./apt-no-root.sh glances  
 
 # - After install, update envs to effective:  
@@ -163,8 +162,8 @@ echo "$USER" >> ./$LOG_FILE
 echo "user home:"
 echo "$HOME" >> ./$LOG_FILE
 echo "install details" >> ./$LOG_FILE
-echo "package:" >> ./$LOG_FILE
-echo "$PACKAGE" >> ./$LOG_FILE
+echo "packages:" >> ./$LOG_FILE
+echo "$*" >> ./$LOG_FILE
 echo "build dir:"  >> ./$LOG_FILE
 echo "$BUILD_DIR"  >> ./$LOG_FILE
 echo "cahche_dir:" >> ./$LOG_FILE
