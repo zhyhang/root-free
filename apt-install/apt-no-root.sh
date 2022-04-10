@@ -20,7 +20,7 @@
 # - After install, update envs to effective:  
 # source ~/.profile
 
-# - The install logs in file apt-no-root.log.
+# - The install log in file install.log.
 
 # - How to modify the default installed values?  
 # search comments "modify according to" in the shell and do your modify.  
@@ -75,12 +75,12 @@ PROFILE_FILE=$HOME/.profile
 APT_CACHE_DIR=$CACHE_DIR/apt/cache
 APT_STATE_DIR=$CACHE_DIR/apt/state
 
-LOG_FILE=apt-no-root.log
+LOG_FILE=install.log
 
 # prepare dir
 mkdir $HOME_BIN -p
 
-# update env to .profile
+# update env to $PROFILE_FILE
 PATH_EXPORTED=`grep $HOME_USR_BIN $PROFILE_FILE | grep "export PATH"`
 if [[ $PATH_EXPORTED == "" ]]; then
   echo export PATH=\$PATH:$HOME_BIN:$HOME_SBIN:$HOME_USR_BIN:$HOME_USR_SBIN:$HOME_USR_SHARE:$HOME_USR_LIB: >>  $PROFILE_FILE
@@ -123,7 +123,7 @@ function indent() {
 APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
 APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=./sources.list -o dir::etc::trusted=./trusted.gpg"
 
-rm -rf $APT_CACHE
+rm -rf $APT_CACHE_DIR
 mkdir -p $APT_CACHE_DIR/archives/partial
 mkdir -p $APT_STATE_DIR/lists/partial
 
