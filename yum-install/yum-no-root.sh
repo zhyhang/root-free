@@ -6,6 +6,32 @@
 # it's logic source https://stackoverflow.com/questions/36651091/how-to-install-packages-in-linux-centos-without-root-user-with-automatic-depen
 ######################################s##################
 
+# - Usage:  
+# ./yum-no-root.sh package
+
+# - Example:  
+# ./yum-no-root.sh httping  
+# ./yum-no-root.sh glances  
+
+# - After install, update envs to effective:  
+# source ~/.bash_profile
+
+# - The install log in file install.log.
+
+# - How to modify the default installed values?  
+# search comments "modify according to" in the shell and do your modify.  
+# e.g. package install base dir is hold by the var BUILD_DIR (default is $HOME/root-free)
+
+# - How to add source repositories without root privilege?  
+# add your soruce repositories to yum.conf in dir of the shell
+
+# - Install success but unable to run or output error?  
+# check if source ~/.bash_profile executed  
+# check PATH (can add more path modify the shell)  
+# check LD_LIBRARY_PATH  
+# check PYTHONPATH  
+# check need to set more env about paths  
+
 pkgname=$1
 
 if [ -z $pkgname ]; then
